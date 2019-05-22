@@ -17,59 +17,57 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the view's delegate
-        sceneView.delegate = self
         
-        // Show statistics such as fps and timing information
+        sceneView.delegate = self
         sceneView.showsStatistics = true
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        sceneView.debugOptions = [.showWorldOrigin, .showFeaturePoints]
+        sceneView.autoenablesDefaultLighting = true
         
-        // Set the scene to the view
-        sceneView.scene = scene
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
 
-        // Run the view's session
         sceneView.session.run(configuration)
+        
+        drawHouse()
+        drawCylinder()
+        drawCircle()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
+ 
         sceneView.session.pause()
     }
 
-    // MARK: - ARSCNViewDelegate
+}
+
+extension ViewController {
     
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
+    func drawHouse() {
+        let scene = SCNScene(named: "art.scnassets/house.dae")!
+        let node = scene.rootNode.clone()
+        node.position = SCNVector3(0.1, 0, 0)
+        node.scale = SCNVector3(0.01, 0.01, 0.01)
+       
+        sceneView.scene.rootNode.addChildNode(node)
     }
     
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
+    func drawCylinder() {
+        let cylinder = SCNNode(geometry: SCNCylinder(radius: 0.002, height: 0.08))
+        cylinder.position = SCNVector3(0.03, 0.04, 0.05)
+        cylinder.geometry?.firstMaterial?.diffuse.contents = UIColor.brown
+        sceneView.scene.rootNode.addChildNode(cylinder)
     }
     
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
+    func drawCircle() {
+        let circle = SCNNode(geometry: SCNSphere(radius: 0.02))
+        circle.position = SCNVector3(0.03, 0.08, 0.05)
+        circle.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+        sceneView.scene.rootNode.addChildNode(circle)
     }
 }
