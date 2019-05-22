@@ -17,10 +17,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         sceneView.delegate = self
         sceneView.showsStatistics = true
-        
         sceneView.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         sceneView.autoenablesDefaultLighting = true
         
@@ -43,7 +41,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
  
         sceneView.session.pause()
     }
-
 }
 
 extension ViewController {
@@ -53,7 +50,6 @@ extension ViewController {
         let node = scene.rootNode.clone()
         node.position = SCNVector3(0.1, 0, 0)
         node.scale = SCNVector3(0.01, 0.01, 0.01)
-       
         sceneView.scene.rootNode.addChildNode(node)
     }
     
@@ -68,6 +64,7 @@ extension ViewController {
         let circle = SCNNode(geometry: SCNSphere(radius: 0.02))
         circle.position = SCNVector3(0.03, 0.08, 0.05)
         circle.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+        circle.geometry?.firstMaterial?.specular.contents = UIColor.yellow
         sceneView.scene.rootNode.addChildNode(circle)
     }
 }
