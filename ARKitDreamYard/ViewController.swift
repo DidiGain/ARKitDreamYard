@@ -10,16 +10,19 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sceneView.delegate = self
 
         sceneView.showsStatistics = true
         sceneView.debugOptions = [.showWorldOrigin, .showFeaturePoints]
         sceneView.autoenablesDefaultLighting = true
+        
         
     }
     
